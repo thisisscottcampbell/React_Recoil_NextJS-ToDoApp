@@ -8,14 +8,14 @@ const ToDoItem = ({ todo, handleDelete }) => {
 	};
 
 	return (
-		<>
+		<div className={styles.card}>
 			<Link href={`/todo/${todo._id}`}>
-				<a className={styles.card}>
+				<a>
 					<h2>{todo.task}</h2>
 				</a>
 			</Link>
 			<button onClick={handleClick}>delete</button>
-		</>
+		</div>
 	);
 };
 
