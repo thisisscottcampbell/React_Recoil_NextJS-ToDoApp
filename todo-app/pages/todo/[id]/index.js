@@ -1,16 +1,19 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import styles from '../../../styles/Home.module.css';
 
 const TodoDetail = ({ todo }) => {
 	console.log(todo);
 	return (
-		<div>
+		<div className={styles.card}>
 			<h1>{todo.task}</h1>
 			<p>{todo.notes}</p>
 			<h5>{todo.status}</h5>
 			<br />
 			<br />
-			<Link href="/">Go Back</Link>
+			<Link href="/">
+				<button>Go Back</button>
+			</Link>
 		</div>
 	);
 };
