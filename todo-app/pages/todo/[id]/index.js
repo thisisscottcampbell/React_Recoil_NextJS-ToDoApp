@@ -13,25 +13,26 @@ const TodoDetail = ({ todo }) => {
 };
 
 export const getStaticProps = async (context) => {
+	console.log(context.params.id);
 	const res = await fetch(
-		`https://jsonplaceholder.typicode.com/posts/${context.params.id}`
+		`http://localhost:3000/api/todos/${context.params.id}`
 	);
 
-	const article = await res.json();
+	const todo = await res.json();
 
 	return {
 		props: {
-			article,
+			todo,
 		},
 	};
 };
 
 export const getStaticPaths = async () => {
-	const res = await fetch(`https://jsonplaceholder.typicode.com/posts`);
+	const res = await fetch(`http://localhost:3000/api/todos`);
 	const todos = await res.json();
 
-	const ids = todos.map((todo) => todo._id);
-
+	const ids = todos.tasks.map((todo) => todo._id);
+	console.log(ids);
 	const paths = ids.map((id) => ({ params: { id: id.toString() } }));
 
 	return {
