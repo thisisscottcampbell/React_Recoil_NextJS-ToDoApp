@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const TodoDetail = ({ todo }) => {
+	console.log(todo);
 	return (
 		<div>
 			<h1>{todo.task}</h1>
@@ -13,7 +14,6 @@ const TodoDetail = ({ todo }) => {
 };
 
 export const getStaticProps = async (context) => {
-	console.log(context.params.id);
 	const res = await fetch(
 		`http://localhost:3000/api/todos/${context.params.id}`
 	);
@@ -22,7 +22,7 @@ export const getStaticProps = async (context) => {
 
 	return {
 		props: {
-			todo,
+			todo: todo.task,
 		},
 	};
 };

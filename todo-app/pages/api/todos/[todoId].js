@@ -8,10 +8,11 @@ const db = pgp(
 
 export default async (req, res) => {
 	try {
-		const { id } = req.query;
+		console.log('req.query', req.query);
+		const { todoId } = req.query;
 		const query = 'SELECT * FROM tasks WHERE _id = $1';
 
-		const task = await db.query(query, [id]);
+		const task = await db.query(query, [Number(todoId)]);
 		console.log(task);
 
 		res.status(200).json({ task: task[0] });
