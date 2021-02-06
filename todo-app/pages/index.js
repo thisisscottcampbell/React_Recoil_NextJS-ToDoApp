@@ -9,6 +9,23 @@ const Home = ({ todos }) => {
 		todos.tasks.length > 0 ? todos.tasks : []
 	);
 
+	const handleDelete = async (task) => {
+		console.log('i am task', task);
+		const res = await fetch(`http://localhost:3000/api/todos/${task._id}`, {
+			method: 'DELETE',
+			headers: {
+				'content-type': 'application/json',
+			},
+		});
+		const deleteTask = await res.json();
+
+		const todoList = newTodos.filter(
+			(todo) => todo._id !== deleteTask.deletedTask._id
+		);
+
+		setNewTodos(todoList);
+	};
+
 	const updateTodos = (task) => {
 		setNewTodos([...newTodos, task[0]]);
 		console.log(newTodos);
@@ -24,7 +41,7 @@ const Home = ({ todos }) => {
 				<h1 className={styles.title}>Your To DO List</h1>
 				<AddTodo updateTodos={updateTodos} />
 				<div className={styles.grid}>
-					<TodoList todos={newTodos} />
+					<TodoList handleDelete={handleDelete} todos={newTodos} />
 				</div>
 			</main>
 		</div>

@@ -6,6 +6,8 @@ const TodoDetail = ({ todo }) => {
 	return (
 		<div>
 			<h1>{todo.task}</h1>
+			<p>{todo.notes}</p>
+			<h5>{todo.status}</h5>
 			<br />
 			<br />
 			<Link href="/">Go Back</Link>

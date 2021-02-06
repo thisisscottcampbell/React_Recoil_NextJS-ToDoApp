@@ -7,18 +7,32 @@ const db = pgp(
 );
 
 export default async (req, res) => {
-	try {
+	const { todoId } = req.query;
+
+	if (req.method === 'GET') {
+		try {
+			const query = 'SELECT * FROM tasks WHERE _id = $1';
+			const task = await db.query(query, [Number(todoId)]);
+
+			res.status(200).json({ task: task[0] });
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: 'Internal Server Error', error: `${error}` });
+		}
+	} else if (req.method === 'DELETE') {
 		console.log('req.query', req.query);
-		const { todoId } = req.query;
-		const query = 'SELECT * FROM tasks WHERE _id = $1';
+		try {
+			const deleteQuery = 'DELETE FROM tasks WHERE _id = $1 RETURNING *';
+			const deletedTask = await db.query(deleteQuery, [Number(todoId)]);
 
-		const task = await db.query(query, [Number(todoId)]);
-		console.log(task);
-
-		res.status(200).json({ task: task[0] });
-	} catch (error) {
-		res
-			.status(500)
-			.json({ message: 'Internal Server Error', error: `${error}` });
+			res
+				.status(200)
+				.json({ message: 'Task was deleted', deletedTask: deletedTask[0] });
+		} catch (error) {
+			res
+				.status(500)
+				.json({ message: 'Internal Server Error', error: `${error}` });
+		}
 	}
 };
