@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import TodoList from '../components/ToDoList';
 import AddTodo from '../components/AddTodo';
 import styles from '../styles/Home.module.css';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { todoState, backendSelector } from '../state/states';
 
 const Home = ({ todos }) => {
-	const [newTodos, setNewTodos] = useState(
-		todos.tasks.length > 0 ? todos.tasks : []
-	);
+	const [newTodos, setNewTodos] = useRecoilState(todoState);
+
+	const currState = useRecoilValue(todoState);
 
 	const handleDelete = async (task) => {
 		console.log('i am task', task);
@@ -27,9 +29,15 @@ const Home = ({ todos }) => {
 	};
 
 	const updateTodos = (task) => {
-		setNewTodos([...newTodos, task[0]]);
-		console.log(newTodos);
+		console.log('curr state', currState);
+		const updateState = [...currState, task[0]];
+		setNewTodos(updateState);
+		console.log('newTodos', newTodos);
 	};
+
+	useEffect(() => {
+		setNewTodos(todos.tasks);
+	}, []);
 
 	return (
 		<div className={styles.container}>
@@ -51,6 +59,8 @@ const Home = ({ todos }) => {
 export const getStaticProps = async () => {
 	const res = await fetch(`http://localhost:3000/api/todos`);
 	const todos = await res.json();
+
+	//const todos = useRecoilState(backendSelector);
 
 	return {
 		props: {

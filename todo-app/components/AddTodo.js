@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { taskState, notesState } from '../state/states';
+import { useRecoilState } from 'recoil';
 
 const AddTodo = ({ updateTodos }) => {
-	const [task, setTask] = useState('');
-	const [notes, setNotes] = useState('');
+	const [task, setTask] = useRecoilState(taskState);
+	const [notes, setNotes] = useRecoilState(notesState);
 
 	const handleSubmit = async () => {
 		const res = await fetch(`http://localhost:3000/api/todos`, {
